@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>يوتيوبي - منصة الفيديو العربية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap');
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: #f9f9f9;
+        }
+        
+        .video-thumbnail {
+            transition: transform 0.3s ease;
+        }
+        
+        .video-thumbnail:hover {
+            transform: scale(1.03);
+        }
+        
+        .sidebar {
+            transition: all 0.3s ease;
+        }
+        
+        .auth-modal {
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .search-bar:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-2 flex items-center justify-between">
+            <!-- Logo and Menu -->
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <button id="menu-toggle" class="md:hidden text-gray-700">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <a href="#" class="flex items-center">
+                    <i class="fab fa-youtube text-red-600 text-3xl"></i>
+                    <span class="mr-2 font-bold text-xl">يوتيوبي</span>
+                </a>
+            </div>
+            
+            <!-- Search Bar -->
+            <div class="hidden md:flex flex-1 max-w-2xl mx-4">
+                <div class="relative w-full">
+                    <input type="text" placeholder="ابحث هنا..." 
+                           class="search-bar w-full border border-gray-300 rounded-l-full py-2 px-4 focus:border-red-500">
+                    <button class="absolute left-0 top-0 h-full bg-gray-100 rounded-r-full px-5 border border-r-0 border-gray-300 hover:bg-gray-200">
+                        <i class="fas fa-search text-gray-600"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- User Actions -->
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <button class="md:hidden text-gray-700">
+                    <i class="fas fa-search text-xl"></i>
+                </button>
+                <button id="upload-btn" class="text-gray-700">
+                    <i class="fas fa-video text-xl"></i>
+                </button>
+                <button class="text-gray-700">
+                    <i class="fas fa-bell text-xl"></i>
+                </button>
+                <button id="auth-btn" class="text-white bg-red-600 hover:bg-red-700 px-4 py-1 rounded-full">
+                    <i class="fas fa-user mr-1"></i>
+                    <span>تسجيل الدخول</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Search -->
+        <div class="md:hidden px-4 pb-2">
+            <div class="relative w-full">
+                <input type="text" placeholder="ابحث هنا..." 
+                       class="search-bar w-full border border-gray-300 rounded-full py-2 px-4 focus:border-red-500">
+                <button class="absolute left-3 top-0 h-full text-gray-500">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar bg-white w-64 fixed h-full shadow-lg transform -translate-x-full md:translate-x-0 transition-all duration-300 z-40">
+            <div class="overflow-y-auto h-full py-4">
+                <!-- Main Menu -->
+                <div class="px-4 py-2">
+                    <a href="#" class="flex items-center space-x-3 space-x-reverse px-4 py-2 text-gray-800 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-home text-red-600"></i>
+                        <span>الصفحة الرئيسية</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 space-x-reverse px-4 py-2 text-gray-800 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-compass"></i>
+                        <span>استكشف</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 space-x-reverse px-4 py-2 text-gray-800 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-subscript"></i>
+                        <span>الاشتراكات</span>
+                    </a>
+                </div>
+                
+                <hr class="my-2">
+                
+                <!-- Library -->
+                <div class="px-4 py-2">
+                    <h3 class="px-4 py-2 font-medium text-gray-500">المكتبة</h3>
+                    <a href="#" class="flex items-center space-x-3 space-x-reverse px-4 py-2 text-gray-800 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-history"></i>
+                        <span>السجل</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 space-x-reverse px-4 py-2 text-gray-800 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-clock"></i>
+                        <span>مشاهدة لاحقًا</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 space-x-reverse px-4 py-2 text-gray-800 hover:bg-gray-100 rounded-lg">
+                        <i class="fas fa-thumbs-up"></i>
+                        <span>مقاطع أعجبتني</span>
+                    </a>
+                </div>
+                
+                <hr class="my-2">
+                
+                <!-- Subscriptions -->
+                <div class="px-4 py-2">
+                    <h3 class="px-4 py-2 font-medium text-gray-500">الاشتراكات</h3>
+                    <a href="#" class="flex items-center space-x-3 space-x-reverse px-4 py-2 text-gray-800 hover:bg-gray-100 rounded-lg">
+                        <img src="https://randomuser.me/api/portraits/men/1.jpg" class="w-6 h-6 rounded-full">
+                        <span>قناة أحمد</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 space-x-reverse px-4 py-2 text-gray-800 hover:bg-gray-100 rounded-lg">
+                        <img src="https://randomuser.me/api/portraits/women/2.jpg" class="w-6 h-6 rounded-full">
+                        <span>قناة سارة</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-3 space-x-reverse px-4 py-2 text-gray-800 hover:bg-gray-100 rounded-lg">
+                        <img src="https://randomuser.me/api/portraits/men/3.jpg" class="w-6 h-6 rounded-full">
+                        <span>قناة محمد</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Overlay for mobile sidebar -->
+        <div id="sidebar-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden"></div>
+        
+        <!-- Main Content -->
+        <main class="flex-1 md:mr-64 mt-16">
+            <!-- Categories -->
+            <div class="bg-white py-2 px-4 overflow-x-auto">
+                <div class="flex space-x-2 space-x-reverse">
+                    <button class="bg-black text-white px-3 py-1 rounded-full text-sm whitespace-nowrap">الكل</button>
+                    <button class="bg-gray-100 px-3 py-1 rounded-full text-sm whitespace-nowrap hover:bg-gray-200">الموسيقى</button>
+                    <button class="bg-gray-100 px-3 py-1 rounded-full text-sm whitespace-nowrap hover:bg-gray-200">البرمجة</button>
+                    <button class="bg-gray-100 px-3 py-1 rounded-full text-sm whitespace-nowrap hover:bg-gray-200">الطبخ</button>
+                    <button class="bg-gray-100 px-3 py-1 rounded-full text-sm whitespace-nowrap hover:bg-gray-200">الأفلام</button>
+                    <button class="bg-gray-100 px-3 py-1 rounded-full text-sm whitespace-nowrap hover:bg-gray-200">الألعاب</button>
+                    <button class="bg-gray-100 px-3 py-1 rounded-full text-sm whitespace-nowrap hover:bg-gray-200">الأخبار</button>
+                    <button class="bg-gray-100 px-3 py-1 rounded-full text-sm whitespace-nowrap hover:bg-gray-200">الرياضة</button>
+                    <button class="bg-gray-100 px-3 py-1 rounded-full text-sm whitespace-nowrap hover:bg-gray-200">التعليم</button>
+                </div>
+            </div>
+            
+            <!-- Videos Grid -->
+            <div class="container mx-auto px-4 py-6">
+                <h2 class="text-xl font-bold mb-6">مقاطع موصى بها</h2>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <!-- Video Card 1 -->
+                    <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                        <div class="relative">
+                            <img src="https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg" alt="فيديو" class="w-full h-40 object-cover video-thumbnail">
+                            <span class="absolute bottom-2 left-2 bg-black bg-opacity-70 text-white text-xs px-1 rounded">10:30</span>
+                        </div>
+                        <div class="p-3">
+                            <div class="flex space-x-2 space-x-reverse">
+                                <img src="https://randomuser.me/api/portraits/men/4.jpg" alt="صورة القناة" class="w-9 h-9 rounded-full mt-1">
+                                <div>
+                                    <h3 class="font-medium text-gray-900 line-clamp-2">كيفية إنشاء موقع مثل يوتيوب باستخدام HTML وCSS وجافاسكريبت</h3>
+                                    <p class="text-gray-600 text-sm mt-1">قناة البرمجة</p>
+                                    <p class="text-gray-500 text-xs">1.2M مشاهدة • منذ 3 أيام</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Video Card 2 -->
+                    <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                        <div class="relative">
+                            <img src="https://i.ytimg.com/vi/J---aiyznGQ/hqdefault.jpg" alt="فيديو" class="w-full h-40 object-cover video-thumbnail">
+                            <span class="absolute bottom-2 left-2 bg-black bg-opacity-70 text-white text-xs px-1 rounded">5:45</span>
+                        </div>
+                        <div class="p-3">
+                            <div class="flex space-x-2 space-x-reverse">
+                                <img src="https://randomuser.me/api/portraits/women/5.jpg" alt="صورة القناة" class="w-9 h-9 rounded-full mt-1">
+                                <div>
+                                    <h3 class="font-medium text-gray-900 line-clamp-2">تعلم الطبخ: طريقة عمل الكبسة السعودية</h3>
+                                    <p class="text-gray-600 text-sm mt-1">مطبخ أم يوسف</p>
+                                    <p class="text-gray-500 text-xs">850K مشاهدة • منذ أسبوع</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Video Card 3 -->
+                    <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                        <div class="relative">
+                            <img src="https://i.ytimg.com/vi/9bZkp7q19f0/hqdefault.jpg" alt="فيديو" class="w-full h-40 object-cover video-thumbnail">
+                            <span class="absolute bottom-2 left-2 bg-black bg-opacity-70 text-white text-xs px-1 rounded">3:52</span>
+                        </div>
+                        <div class="p-3">
+                            <div class="flex space-x-2 space-x-reverse">
+                                <img src="https://randomuser.me/api/portraits/men/6.jpg" alt="صورة القناة" class="w-9 h-9 rounded-full mt-1">
+                                <div>
+                                    <h3 class="font-medium text-gray-900 line-clamp-2">أغنية رائعة من الماضي</h3>
+                                    <p class="text-gray-600 text-sm mt-1">قناة الموسيقى</p>
+                                    <p class="text-gray-500 text-xs">3.5M مشاهدة • منذ شهر</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Video Card 4 -->
+                    <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                        <div class="relative">
+                            <img src="https://i.ytimg.com/vi/PkZNo7MFNFg/hqdefault.jpg" alt="فيديو" class="w-full h-40 object-cover video-thumbnail">
+                            <span class="absolute bottom-2 left-2 bg-black bg-opacity-70 text-white text-xs px-1 rounded">15:20</span>
+                        </div>
+                        <div class="p-3">
+                            <div class="flex space-x-2 space-x-reverse">
+                                <img src="https://randomuser.me/api/portraits/women/7.jpg" alt="صورة القناة" class="w-9 h-9 rounded-full mt-1">
+                                <div>
+                                    <h3 class="font-medium text-gray-900 line-clamp-2">تعلم JavaScript في 30 دقيقة - دليل المبتدئين</h3>
+                                    <p class="text-gray-600 text-sm mt-1">قناة المطورين</p>
+                                    <p class="text-gray-500 text-xs">2.1M مشاهدة • منذ 5 أيام</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Video Card 5 -->
+                    <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                        <div class="relative">
+                            <img src="https://i.ytimg.com/vi/7ghhRHRP6t4/hqdefault.jpg" alt="فيديو" class="w-full h-40 object-cover video-thumbnail">
+                            <span class="absolute bottom-2 left-2 bg-black bg-opacity-70 text-white text-xs px-1 rounded">8:15</span>
+                        </div>
+                        <div class="p-3">
+                            <div class="flex space-x-2 space-x-reverse">
+                                <img src="https://randomuser.me/api/portraits/men/8.jpg" alt="صورة القناة" class="w-9 h-9 rounded-full mt-1">
+                                <div>
+                                    <h3 class="font-medium text-gray-900 line-clamp-2">أفضل 10 أماكن سياحية في دبي</h3>
+                                    <p class="text-gray-600 text-sm mt-1">السفر مع خالد</p>
+                                    <p class="text-gray-500 text-xs">1.7M مشاهدة • منذ 3 أسابيع</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Video Card 6 -->
+                    <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                        <div class="relative">
+                            <img src="https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg" alt="فيديو" class="w-full h-40 object-cover video-thumbnail">
+                            <span class="absolute bottom-2 left-2 bg-black bg-opacity-70 text-white text-xs px-1 rounded">12:40</span>
+                        </div>
+                        <div class="p-3">
+                            <div class="flex space-x-2 space-x-reverse">
+                                <img src="https://randomuser.me/api/portraits/women/9.jpg" alt="صورة القناة" class="w-9 h-9 rounded-full mt-1">
+                                <div>
+                                    <h3 class="font-medium text-gray-900 line-clamp-2">حيل وتلميحات في Photoshop قد لا تعرفها</h3>
+                                    <p class="text-gray-600 text-sm mt-1">قناة التصميم</p>
+                                    <p class="text-gray-500 text-xs">950K مشاهدة • منذ يومين</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Video Card 7 -->
+                    <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                        <div class="relative">
+                            <img src="https://i.ytimg.com/vi/J---aiyznGQ/hqdefault.jpg" alt="فيديو" class="w-full h-40 object-cover video-thumbnail">
+                            <span class="absolute bottom-2 left-2 bg-black bg-opacity-70 text-white text-xs px-1 rounded">7:22</span>
+                        </div>
+                        <div class="p-3">
+                            <div class="flex space-x-2 space-x-reverse">
+                                <img src="https://randomuser.me/api/portraits/men/10.jpg" alt="صورة القناة" class="w-9 h-9 rounded-full mt-1">
+                                <div>
+                                    <h3 class="font-medium text-gray-900 line-clamp-2">أحدث أخبار التكنولوجيا لهذا الأسبوع</h3>
+                                    <p class="text-gray-600 text-sm mt-1">تكنو نيوز</p>
+                                    <p class="text-gray-500 text-xs">1.3M مشاهدة • منذ 4 أيام</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Video Card 8 -->
+                    <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                        <div class="relative">
+                            <img src="https://i.ytimg.com/vi/9bZkp7q19f0/hqdefault.jpg" alt="فيديو" class="w-full h-40 object-cover video-thumbnail">
+                            <span class="absolute bottom-2 left-2 bg-black bg-opacity-70 text-white text-xs px-1 rounded">6:18</span>
+                        </div>
+                        <div class="p-3">
+                            <div class="flex space-x-2 space-x-reverse">
+                                <img src="https://randomuser.me/api/portraits/women/11.jpg" alt="صورة القناة" class="w-9 h-9 rounded-full mt-1">
+                                <div>
+                                    <h3 class="font-medium text-gray-900 line-clamp-2">تمارين رياضية للمبتدئين في المنزل</h3>
+                                    <p class="text-gray-600 text-sm mt-1">لياقة مع نورة</p>
+                                    <p class="text-gray-500 text-xs">2.8M مشاهدة • منذ شهر</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+        <div class="auth-modal bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold">تسجيل الدخول</h3>
+                    <button id="close-auth-modal" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="flex border-b">
+                    <button id="login-tab" class="px-4 py-2 font-medium border-b-2 border-red-600 text-red-600">تسجيل الدخول</button>
+                    <button id="register-tab" class="px-4 py-2 font-medium text-gray-500 hover:text-gray-700">إنشاء حساب</button>
+                </div>
+                
+                <!-- Login Form -->
+                <div id="login-form" class="mt-6">
+                    <div class="mb-4">
+                        <label for="login-email" class="block text-gray-700 mb-2">البريد الإلكتروني</label>
+                        <input type="email" id="login-email" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-red-500">
+                    </div>
+                    <div class="mb-6">
+                        <label for="login-password" class="block text-gray-700 mb-2">كلمة المرور</label>
+                        <input type="password" id="login-password" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-red-500">
+                    </div>
+                    <button class="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700">تسجيل الدخول</button>
+                    <div class="mt-4 text-center text-sm text-gray-600">
+                        <a href="#" class="text-red-600 hover:underline">نسيت كلمة المرور؟</a>
+                    </div>
+                </div>
+                
+                <!-- Register Form -->
+                <div id="register-form" class="mt-6 hidden">
+                    <div class="mb-4">
+                        <label for="register-name" class="block text-gray-700 mb-2">الاسم الكامل</label>
+                        <input type="text" id="register-name" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-red-500">
+                    </div>
+                    <div class="mb-4">
+                        <label for="register-email" class="block text-gray-700 mb-2">البريد الإلكتروني</label>
+                        <input type="email" id="register-email" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-red-500">
+                    </div>
+                    <div class="mb-4">
+                        <label for="register-password" class="block text-gray-700 mb-2">كلمة المرور</label>
+                        <input type="password" id="register-password" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-red-500">
+                    </div>
+                    <div class="mb-6">
+                        <label for="register-confirm-password" class="block text-gray-700 mb-2">تأكيد كلمة المرور</label>
+                        <input type="password" id="register-confirm-password" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-red-500">
+                    </div>
+                    <button class="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700">إنشاء حساب</button>
+                    <div class="mt-4 text-center text-sm text-gray-600">
+                        <span>بالنقر على "إنشاء حساب"، فإنك توافق على <a href="#" class="text-red-600 hover:underline">شروط الخدمة</a> و<a href="#" class="text-red-600 hover:underline">سياسة الخصوصية</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Mobile sidebar toggle
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+        
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebarOverlay.classList.toggle('hidden');
+        });
+        
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.add('-translate-x-full');
+            sidebarOverlay.classList.add('hidden');
+        });
+        
+        // Auth modal
+        const authBtn = document.getElementById('auth-btn');
+        const authModal = document.getElementById('auth-modal');
+        const closeAuthModal = document.getElementById('close-auth-modal');
+        const loginTab = document.getElementById('login-tab');
+        const registerTab = document.getElementById('register-tab');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        
+        authBtn.addEventListener('click', () => {
+            authModal.classList.remove('hidden');
+        });
+        
+        closeAuthModal.addEventListener('click', () => {
+            authModal.classList.add('hidden');
+        });
+        
+        loginTab.addEventListener('click', () => {
+            loginTab.classList.add('border-red-600', 'text-red-600');
+            loginTab.classList.remove('text-gray-500');
+            registerTab.classList.remove('border-red-600', 'text-red-600');
+            registerTab.classList.add('text-gray-500');
+            loginForm.classList.remove('hidden');
+            registerForm.classList.add('hidden');
+        });
+        
+        registerTab.addEventListener('click', () => {
+            registerTab.classList.add('border-red-600', 'text-red-600');
+            registerTab.classList.remove('text-gray-500');
+            loginTab.classList.remove('border-red-600', 'text-red-600');
+            loginTab.classList.add('text-gray-500');
+            registerForm.classList.remove('hidden');
+            loginForm.classList.add('hidden');
+        });
+        
+        // Close modal when clicking outside
+        authModal.addEventListener('click', (e) => {
+            if (e.target === authModal) {
+                authModal.classList.add('hidden');
+            }
+        });
+        
+        // Simulate login/logout
+        let isLoggedIn = false;
+        
+        authBtn.addEventListener('click', () => {
+            if (isLoggedIn) {
+                // Logout logic
+                isLoggedIn = false;
+                authBtn.innerHTML = '<i class="fas fa-user mr-1"></i><span>تسجيل الدخول</span>';
+                // Hide auth modal if open
+                authModal.classList.add('hidden');
+            }
+        });
+        
+        // Form submission (simulated)
+        const loginSubmit = loginForm.querySelector('button');
+        const registerSubmit = registerForm.querySelector('button');
+        
+        loginSubmit.addEventListener('click', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            if (email && password) {
+                // Simulate successful login
+                isLoggedIn = true;
+                authBtn.innerHTML = '<i class="fas fa-user mr-1"></i><span>حسابي</span>';
+                authModal.classList.add('hidden');
+                // Clear form
+                document.getElementById('login-email').value = '';
+                document.getElementById('login-password').value = '';
+                
+                // Show success message (you could add a toast notification here)
+                alert('تم تسجيل الدخول بنجاح!');
+            } else {
+                alert('الرجاء إدخال البريد الإلكتروني وكلمة المرور');
+            }
+        });
+        
+        registerSubmit.addEventListener('click', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm-password').value;
+            
+            if (!name || !email || !password || !confirmPassword) {
+                alert('الرجاء ملء جميع الحقول');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                alert('كلمة المرور وتأكيدها غير متطابقين');
+                return;
+            }
+            
+            // Simulate successful registration
+            alert('تم إنشاء الحساب بنجاح! الرجاء تسجيل الدخول الآن.');
+            
+            // Switch to login tab
+            loginTab.click();
+            
+            // Pre-fill email
+            document.getElementById('login-email').value = email;
+            
+            // Clear register form
+            document.getElementById('register-name').value = '';
+            document.getElementById('register-email').value = '';
+            document.getElementById('register-password').value = '';
+            document.getElementById('register-confirm-password').value = '';
+        });
+
+        // Upload Video Functionality
+        const uploadBtn = document.getElementById('upload-btn');
+        const uploadModal = document.getElementById('upload-modal');
+        const closeUploadModal = document.getElementById('close-upload-modal');
+        const uploadForm = document.getElementById('upload-form');
+        
+        uploadBtn.addEventListener('click', () => {
+            if (!isLoggedIn) {
+                alert('يجب تسجيل الدخول لرفع فيديو');
+                authModal.classList.remove('hidden');
+                return;
+            }
+            uploadModal.classList.remove('hidden');
+        });
+        
+        closeUploadModal.addEventListener('click', () => {
+            uploadModal.classList.add('hidden');
+        });
+        
+        uploadModal.addEventListener('click', (e) => {
+            if (e.target === uploadModal) {
+                uploadModal.classList.add('hidden');
+            }
+        });
+        
+        // Simulate video upload
+        uploadForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('video-title').value;
+            const description = document.getElementById('video-description').value;
+            
+            if (!title) {
+                alert('الرجاء إدخال عنوان الفيديو');
+                return;
+            }
+            
+            // Generate random video data
+            const randomViews = Math.floor(Math.random() * 1000000) + 1000;
+            const randomChannel = Math.floor(Math.random() * 100) + 1;
+            const randomDuration = `${Math.floor(Math.random() * 10) + 1}:${Math.floor(Math.random() * 60).toString().padStart(2, '0')}`;
+            const randomThumbnail = `https://i.ytimg.com/vi/${Math.random().toString(36).substring(2, 15)}/hqdefault.jpg`;
+            
+            // Create new video element
+            const videosGrid = document.querySelector('.grid');
+            const newVideo = document.createElement('div');
+            newVideo.className = 'bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow';
+            newVideo.innerHTML = `
+                <div class="relative">
+                    <img src="${randomThumbnail}" alt="فيديو" class="w-full h-40 object-cover video-thumbnail">
+                    <span class="absolute bottom-2 left-2 bg-black bg-opacity-70 text-white text-xs px-1 rounded">${randomDuration}</span>
+                </div>
+                <div class="p-3">
+                    <div class="flex space-x-2 space-x-reverse">
+                        <img src="https://randomuser.me/api/portraits/men/${randomChannel}.jpg" alt="صورة القناة" class="w-9 h-9 rounded-full mt-1">
+                        <div>
+                            <h3 class="font-medium text-gray-900 line-clamp-2">${title}</h3>
+                            <p class="text-gray-600 text-sm mt-1">قناتك</p>
+                            <p class="text-gray-500 text-xs">${randomViews.toLocaleString()} مشاهدة • منذ قليل</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Add new video to the top of the grid
+            videosGrid.prepend(newVideo);
+            
+            // Reset form and close modal
+            uploadForm.reset();
+            uploadModal.classList.add('hidden');
+            
+            alert('تم رفع الفيديو بنجاح وسيظهر للجميع!');
+        });
+    </script>
+
+    <!-- Upload Modal -->
+    <div id="upload-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+        <div class="auth-modal bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold">رفع فيديو جديد</h3>
+                    <button id="close-upload-modal" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <form id="upload-form">
+                    <div class="mb-4">
+                        <label for="video-title" class="block text-gray-700 mb-2">عنوان الفيديو</label>
+                        <input type="text" id="video-title" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-red-500">
+                    </div>
+                    <div class="mb-4">
+                        <label for="video-description" class="block text-gray-700 mb-2">وصف الفيديو</label>
+                        <textarea id="video-description" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-red-500" rows="3"></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label for="video-thumbnail" class="block text-gray-700 mb-2">صورة الغلاف</label>
+                        <input type="file" id="video-thumbnail" accept="image/*" class="w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="video-file" class="block text-gray-700 mb-2">ملف الفيديو</label>
+                        <input type="file" id="video-file" accept="video/*" required class="w-full">
+                    </div>
+                    <button type="submit" class="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700">رفع الفيديو</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
